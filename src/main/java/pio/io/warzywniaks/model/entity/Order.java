@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pio.io.warzywniaks.model.constant.OrderStatus;
 
 
 @Entity
@@ -23,6 +24,7 @@ public class Order {
     @OneToOne
     @JoinColumn(name = "delivery_id")
     private DeliveryDetails delivery;
+    private OrderStatus orderStatus;
     private String address;
     @ManyToOne
     @JoinColumn(name = "user_id")
