@@ -15,7 +15,7 @@ import lombok.Setter;
 public class ProductInCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "cart_id")

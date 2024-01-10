@@ -17,12 +17,12 @@ public class OrderController {
     private final OrderService orderService;
     @GetMapping("/all")
     public ResponseEntity<OrderListDTO> getAllOrders(){
-        return new ResponseEntity(orderService.getAllOrders(), HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(orderService.getAllOrders(), HttpStatusCode.valueOf(200));
     }
 
     @GetMapping("/{id}/details")
     public ResponseEntity<OrderDTO> getOrderDetails(@PathVariable long id){
-        return new ResponseEntity(orderService.getOrder(id),HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(orderService.getOrder(id),HttpStatusCode.valueOf(200));
     }
 
     @PutMapping("/{id}/update/status")

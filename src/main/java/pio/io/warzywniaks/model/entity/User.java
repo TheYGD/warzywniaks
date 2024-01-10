@@ -17,7 +17,7 @@ import pio.io.warzywniaks.model.constant.Role;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String login;
     private String password;
     private String firstName;

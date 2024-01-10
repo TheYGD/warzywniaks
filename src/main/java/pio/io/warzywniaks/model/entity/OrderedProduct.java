@@ -15,7 +15,7 @@ import lombok.Setter;
 public class OrderedProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "product_id")

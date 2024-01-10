@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class Complaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String description;
     private LocalDate date;
 

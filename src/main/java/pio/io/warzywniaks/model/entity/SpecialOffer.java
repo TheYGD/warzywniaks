@@ -19,7 +19,7 @@ import java.util.List;
 public class SpecialOffer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private BigDecimal percentage;
     private LocalDate endDate;
     private LocalDate startDate;

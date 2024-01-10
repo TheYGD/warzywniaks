@@ -19,7 +19,7 @@ import java.time.Instant;
 public class PaymentDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String externalId;
     private Instant date;
     private PaymentStatus status;

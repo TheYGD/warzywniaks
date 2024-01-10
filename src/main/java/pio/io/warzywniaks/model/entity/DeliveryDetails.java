@@ -17,7 +17,7 @@ import pio.io.warzywniaks.model.constant.DeliveryStatus;
 public class DeliveryDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String externalId;
     private DeliveryStatus status;
 }

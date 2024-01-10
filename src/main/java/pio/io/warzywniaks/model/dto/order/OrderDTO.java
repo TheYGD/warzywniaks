@@ -6,5 +6,5 @@ import pio.io.warzywniaks.model.entity.PaymentDetails;
 
 import java.util.List;
 
-public record OrderDTO(long id, DeliveryDetails deliveryDetails, PaymentDetails paymentDetails, String deliveryAddress, List<OrderedProductDTO> orderedProducts, String userLogin) {
+public record OrderDTO(Long id, DeliveryDetails deliveryDetails, PaymentDetails paymentDetails, String deliveryAddress, List<OrderedProductDTO> orderedProducts, String userLogin) {
 }
