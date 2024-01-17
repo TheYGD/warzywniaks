@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="_shared/_layout">
+
+<head>
+    <title>Koszyk - Warzywniaks.pl</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .cart-container {
+            box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1), 5px 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+            display: flex;
+            justify-content: center;
+        }
+
+        .price-text {
+            text-align: right;
+            font-size: 15px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table, th, td, tbody {
+            border: 1px solid white;
+            border-top: none;
+        }
+
+        tr {
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        thead {
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .table-element{
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table-quantity-element{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        hr {
+            border: 1px solid #ccc; /* Adjust color as needed */
+            margin: 10px 0;
+        }
+
+        /* Center the table content */
+        .content {
+            text-align: center;
+        }
+
+        .product-image {
+            width: 100%;
+            max-width: 100px; /* Adjust the maximum width as needed */
+            margin-right: 20px;
+        }
+
+    </style>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+            </div>
+        </div>
+        <div class="row cart-container">
+            <div class="col-md-12">
+                <br><br>
+                <div class="content">
+                    <table class="display" th:if="${not productsInCart.isEmpty()}">
+                        <thead class="text-center">
+                        <tr>
+                            <th class="info-text-center">Produkt</th>
+                            <th class="text-center"></th>
+                            <th class="text-center">Ilość</th>
+                            <th class="text-right">Cena</th>
+                            <th class="text-center" colspan="1"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="productInCart : ${productsInCart}">
+                            <td class="text-center" style="justify-content: center;"><img th:src="${productInCart.availableProduct.product.imageUrl}" alt="Product Image" class="product-image"></td>
+                            <td class="table-element">
+                                <a th:href="@{/details/{productId}(productId=${productInCart.availableProduct.getId()})}" th:text= "${productInCart.availableProduct.product.getName()}"></a>
+                            </td>
+                            <td class="table-element" >
+                                <div class="table-quantity-element">
+                                <a class="btn btn-danger" th:href="@{/cart/{productId}/sub(productId=${productInCart.getId()})}" style="margin-right: auto;">-</a>
+                                <div class="text-center" th:text="${productInCart.getQuantity()}" style="margin: 0 10px;"></div>
+                                    <a th:if="${productInCart.availableProduct.amount gt 0}" class="btn btn-success"
+                                       th:href="@{/cart/{productId}/add(productId=${productInCart.getId()})}" style="margin-left: auto;">+</a>
+                                    <a th:unless="${productInCart.availableProduct.amount gt 0}" class="btn btn-secondary disabled"
+                                       style="margin-left: auto;">+</a>
+                                </div>
+                            </td>
+                            <td class="table-element">
+                                <div class="price-text">
+                                    <th:block th:if="${productInCart.availableProduct.specialOffers.size() > 0}">
+                                        <p class="card-text">
+                                            <span th:text="${#numbers.formatDecimal(specialOfferService.calculatePriceInCart(productInCart), 1, 'COMMA', 2, 'POINT')}"></span>PLN
+                                        </p>
+                                        <p class="card-text text-success" style="margin-left: 10px;">
+                                            -<span th:text="${#numbers.formatDecimal(specialOfferService.calculateDiscountInCart(productInCart), 1, 'COMMA', 2, 'POINT')}"></span>PLN
+                                        </p>
+                                    </th:block>
+
+                                    <th:block th:unless="${productInCart.availableProduct.specialOffers.size() > 0}">
+                                        <p class="card-text">
+                                            <span th:text="${#numbers.formatDecimal(specialOfferService.calculatePriceInCart(productInCart), 1, 'COMMA', 2, 'POINT')}"></span>PLN
+                                        </p>
+                                    </th:block>
+                                </div>
+                            </td>
+                            <td class="text-center"><a class="btn btn-danger" th:href="@{/cart/remove(id=${productInCart.getId()})}">Usuń produkt</a></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div th:if="${productsInCart.isEmpty()}" class="text-center">
+                        <h1>Brak produktów w koszyku.</h1>
+                    </div>
+                    <div th:if="${productsInCart.isEmpty()}" class="text-left">
+                        <a class="btn btn-secondary disabled">Płatność niedostępna</a>
+                    </div>
+                    <div th:unless="${productsInCart.isEmpty()}" class="text-right">
+                        <p><span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}"></span>PLN</p>
+                        <p>-<span class="text-success" th:text="${#numbers.formatDecimal(totalDiscount, 1, 'COMMA', 2, 'POINT')}"></span>PLN</p>
+                        <hr>
+                        <p>Całkowita cena: <span th:text="${#numbers.formatDecimal(finalPrice, 1, 'COMMA', 2, 'POINT')}"></span>PLN</p>
+                    </div>
+
+                    <div th:unless="${productsInCart.isEmpty()}" class="text-left">
+                        <a class="btn btn-primary" th:href="@{/payment}">Przejdź do płatności</a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

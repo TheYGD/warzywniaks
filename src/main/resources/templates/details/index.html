@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="_shared/_layout">
+
+<head>
+    <title>Product Details - Warzywniaks.pl</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add any additional stylesheets or scripts you need for your details page -->
+    <style>
+        .product-container {
+            box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1), 5px 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+            display: flex; /* Use flexbox to align image and text side by side */
+        }
+
+        .product-image {
+            width: 100%;
+            max-width: 400px; /* Adjust as needed */
+            margin-right: 20px; /* Add margin to separate image and text */
+        }
+
+        .info-column {
+            margin-top:50px;
+        }
+
+
+        .description-text {
+            text-align: justify;
+            color: #343a40;
+        }
+
+        .price-text {
+            text-align: right;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .info-text {
+            text-align: right;
+        }
+        .info-container {
+            padding: 5px;
+        }
+
+        .add-to-cart {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quantity-selector {
+            align-items: flex-start; /* Align items vertically */
+            margin-bottom: 10px; /* Add margin between the input and button */
+        }
+
+        .quantity-input {
+            width: 35px; /* Adjust the width as needed */
+        }
+
+
+        .offer-container {
+            display: flex;
+        }
+
+        .expired-message {
+            background-color: #d3d3d3; /* Use a color that represents expired or inactive */
+            color: #555; /* Text color for better readability */
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+
+    </style>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+            </div>
+        </div>
+        <div class="row product-container">
+            <div class="col-md-6">
+                <!-- Display product image -->
+                <img th:src="${availableProduct.product.imageUrl}" alt="Product Image" class="product-image">
+            </div>
+            <div class="col-md-6 info-column">
+
+                <!-- Display product details -->
+                <h1 th:text="${availableProduct.product.name}"></h1>
+                <div class="description-text">
+                    <p th:text="${availableProduct.description}"></p>
+                </div>
+                <div class="price-text">
+                    <th:block th:if="${availableProduct.specialOffers.size() > 0}">
+                                    <span class="card-text">
+                                        <span th:text="${#numbers.formatDecimal(specialOfferService.calculateFinalPrice(availableProduct), 1, 'COMMA', 2, 'POINT')}"></span>PLN
+                                    </span>
+                        <span class="card-text text-muted" style="margin-left: 10px;">
+                                         <s th:text="${#numbers.formatDecimal(availableProduct.product.price, 1, 'COMMA', 2, 'POINT')}"></s>PLN
+                                    </span>
+                    </th:block>
+
+                    <th:block th:unless="${availableProduct.specialOffers.size() > 0}">
+                        <p class="card-text">
+                            <span th:text="${#numbers.formatDecimal(availableProduct.product.price, 1, 'COMMA', 2, 'POINT')}"></span>PLN
+                        </p>
+                    </th:block>
+                </div>
+
+
+                <div class="add-to-cart">
+                    Ilość
+                    <form th:action="@{/details/add/{productId}(productId=${availableProduct.getId()})}" method="post">
+                        <div class="quantity-selector">
+                            <input type="number" name="quantity" class="quantity-input" value="1" min="1" th:max="${availableProduct.amount}">
+                            z <span th:text="${availableProduct.amount}"></span>
+                        </div>
+                        <button type="submit" class="btn btn-success">Dodaj do koszyka</button>
+                    </form>
+                </div>
+                <div class="info-container">
+                    <p>Informacje o produkcie:</p>
+                    <hr>
+                    <p>Kategoria <span th:text="${availableProduct.product.category.name}"></span></p>
+                    <hr>
+                </div>
+
+                <th:block th:if="${availableProduct.specialOffers.size() > 0}">
+                    <div class="offer-container" th:each="offer : ${availableProduct.specialOffers}">
+                        <div th:if="${specialOfferService.isOfferValid(offer)}" class="alert alert-info" role="alert" style="align-items: stretch;">
+                            <span th:text="'Oferta ' + '\'' +${offer.info} + '\' obowiązuje od ' + ${#temporals.format(offer.startDate, 'dd.MM.yyyy')} + ' do ' + ${#temporals.format(offer.endDate, 'dd.MM.yyyy')}"></span>
+                            <br/>
+                        </div>
+                        <div th:unless="${specialOfferService.isOfferValid(offer)}" class="expired-offer">
+                            <p>
+                                <span th:text="Oferta wygasła!"></span>
+                            </p>
+                        </div>
+                    </div>
+                </th:block>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

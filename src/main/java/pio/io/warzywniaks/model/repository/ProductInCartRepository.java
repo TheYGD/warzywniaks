@@ -1,10 +1,10 @@
 package pio.io.warzywniaks.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.stereotype.Repository;
-import pio.io.warzywniaks.model.entity.Category;
+import pio.io.warzywniaks.model.entity.ProductInCart;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category,Long> {
-    Category findByName(String name);
+public interface ProductInCartRepository extends JpaRepository<ProductInCart,Long> {
 }

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="_shared/_layout">
+
+<head>
+    <title>Katalog - Warzywniaks.pl</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+
+        body{
+            margin-bottom: 20px;
+        }
+        .categories-column {
+            position: fixed;
+            top: 70px;
+            left: 50px;
+            bottom: 0;
+            overflow-y: auto;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .categories-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .category-checkbox {
+            margin-right: 5px;
+        }
+
+        .product-column {
+            margin-left: 300px;
+        }
+
+        .products-container {
+            box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1), 5px 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+
+        .product-card {
+            width: 70%;
+            margin: 2.5%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 25px;
+            margin-top: 25px;
+        }
+
+        .product-card img {
+            flex: 1;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .card-img-container {
+            height: 0;
+            padding-bottom: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-body h5 {
+            margin-bottom: 10px;
+        }
+
+        .empty-category {
+            font-size: 30px;
+            font-weight: bold;
+            text-align: justify;
+            padding: 10px 10px 5px 25px;
+        }
+    </style>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Left column for categories -->
+            <div class="col-md-3 categories-column">
+                <div class="categories-box">
+                    <h4>Kategorie</h4>
+                    <hr style="margin-top: 5px; margin-bottom: 10px;">
+
+                    <form th:action="@{/filter}" method="get">
+                        <div th:each="category: ${categories}">
+                            <label>
+                                <input type="checkbox" th:value="${category.getId()}" name="categoryIds" class="category-checkbox">
+                                <span th:text="${category.getName()}"></span>
+                            </label>
+                        </div>
+                        <button type="submit">Filtruj</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right column for products -->
+            <div class="col-md-9 product-column">
+                <div class="row products-container">
+                    <th:block th:if="${availableProducts.isEmpty()}">
+                        <!-- Display a message or include a custom HTML page -->
+                        <p class="empty-category">Brak dostępnych ofert produktów dla danej kategorii</p>
+                    </th:block>
+                    <!-- Iterate over all available products -->
+                    <div class="col-md-6" th:each="availableProduct : ${availableProducts}">
+                        <div class="card product-card">
+                            <!-- Display product image -->
+                            <div class="card-img-container">
+                                <img class="card-img-top" th:src="${availableProduct.product.imageUrl}" alt="Product Image">
+                            </div>
+
+                            <div class="card-body">
+                                <!-- Display product name with a hyperlink to the product details page -->
+                                <a th:href="@{/details/{id}(id=${availableProduct.id})}" class="card-title">
+                                    <h5 th:text="${availableProduct.product.name}"></h5>
+                                </a>
+
+                                <!-- Display pricing information -->
+                                <th:block th:if="${availableProduct.specialOffers.size() > 0}">
+                                    <span class="card-text">
+                                        <span th:text="${#numbers.formatDecimal(specialOfferService.calculateFinalPrice(availableProduct), 1, 'COMMA', 2, 'POINT')}"></span>PLN
+                                    </span>
+                                    <span class="card-text text-muted" style="margin-left: 10px;">
+                                         <s th:text="${#numbers.formatDecimal(availableProduct.product.price, 1, 'COMMA', 2, 'POINT')}"></s>PLN
+                                    </span>
+                                </th:block>
+
+                                <th:block th:unless="${availableProduct.specialOffers.size() > 0}">
+                                    <p class="card-text">
+                                        <span th:text="${#numbers.formatDecimal(availableProduct.product.price, 1, 'COMMA', 2, 'POINT')}"></span>PLN
+                                    </p>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

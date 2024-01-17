@@ -20,6 +20,7 @@ public class SpecialOffer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private String info;
     private BigDecimal percentage;
     private LocalDate endDate;
     private LocalDate startDate;
@@ -29,5 +30,6 @@ public class SpecialOffer {
             name = "available_produts_special_offers",
             joinColumns = @JoinColumn(name = "special_offer_id"),
             inverseJoinColumns = @JoinColumn(name = "available_product_id"))
-    List<AvailableProduct> products;
+    List<AvailableProduct> availableProducts;
+
 }

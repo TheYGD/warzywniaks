@@ -22,6 +22,15 @@ public class ProductInCart {
     private Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "availableProduct_id")
+    private AvailableProduct availableProduct;
+
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+
+    public ProductInCart(AvailableProduct product, int quantity, Cart cart) {
+        this.availableProduct = product;
+        this.quantity = quantity;
+        this.cart = cart;
+    }
 }

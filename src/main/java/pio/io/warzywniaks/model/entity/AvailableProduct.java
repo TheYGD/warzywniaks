@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "available_products")
 @Getter
@@ -22,4 +24,7 @@ public class AvailableProduct {
     private Product product;
 
     private int amount;
+    private String description;
+    @ManyToMany(mappedBy = "availableProducts")
+    private List<SpecialOffer> specialOffers;
 }
