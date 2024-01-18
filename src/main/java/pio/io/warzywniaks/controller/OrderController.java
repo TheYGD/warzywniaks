@@ -11,8 +11,9 @@ import pio.io.warzywniaks.model.dto.order.OrderListDTO;
 import pio.io.warzywniaks.service.OrderService;
 
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/v1/order")
 @RequiredArgsConstructor
+@CrossOrigin
 public class OrderController {
     private final OrderService orderService;
     @GetMapping("/all")

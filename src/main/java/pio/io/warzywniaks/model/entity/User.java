@@ -2,10 +2,7 @@ package pio.io.warzywniaks.model.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pio.io.warzywniaks.model.constant.Role;
 
 @Entity
