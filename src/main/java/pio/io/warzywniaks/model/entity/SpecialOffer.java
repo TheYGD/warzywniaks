@@ -32,4 +32,11 @@ public class SpecialOffer {
             inverseJoinColumns = @JoinColumn(name = "available_product_id"))
     List<AvailableProduct> availableProducts;
 
+    public SpecialOffer(long id, String info, BigDecimal percentage, LocalDate endDate, LocalDate startDate) {
+        this.id = id;
+        this.info = info;
+        this.percentage = percentage;
+        this.endDate = endDate;
+        this.startDate = startDate;
+    }
 }

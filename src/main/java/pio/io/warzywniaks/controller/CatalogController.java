@@ -6,8 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import pio.io.warzywniaks.model.comparator.AvailableProductComparator;
+import pio.io.warzywniaks.model.comparator.ProductInCartComparator;
 import pio.io.warzywniaks.model.entity.AvailableProduct;
 import pio.io.warzywniaks.model.entity.Category;
+import pio.io.warzywniaks.model.entity.ProductInCart;
 import pio.io.warzywniaks.service.AvailableProductService;
 import pio.io.warzywniaks.service.CategoryService;
 import pio.io.warzywniaks.service.SpecialOfferService;
@@ -31,7 +34,8 @@ public class CatalogController {
     @GetMapping({"", "/", "/index"})
     public String home(Model model) {
         List<AvailableProduct> availableProducts = availableProductService.getAllAvailableProducts();
-
+        AvailableProductComparator comparator = new AvailableProductComparator();
+        availableProducts.sort(comparator);
         model.addAttribute("availableProducts", availableProducts);
         model.addAttribute("categories", categoryService.getCategoryList());
         model.addAttribute("specialOfferService", specialOfferService);
@@ -58,6 +62,8 @@ public class CatalogController {
             filteredProducts = availableProductService.getAllAvailableProducts();
         }
 
+        AvailableProductComparator comparator = new AvailableProductComparator();
+        filteredProducts.sort(comparator);
         model.addAttribute("categories", categoryService.getCategoryList());
         model.addAttribute("availableProducts", filteredProducts);
         model.addAttribute("specialOfferService", specialOfferService);

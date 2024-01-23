@@ -27,4 +27,11 @@ public class AvailableProduct {
     private String description;
     @ManyToMany(mappedBy = "availableProducts")
     private List<SpecialOffer> specialOffers;
+
+    public AvailableProduct(long id, Product product, int amount, String description) {
+        this.id = id;
+        this.product = product;
+        this.amount = amount;
+        this.description = description;
+    }
 }

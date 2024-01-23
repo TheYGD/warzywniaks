@@ -10,8 +10,8 @@
     <style>
         .product-container {
             box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1), 5px 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 10px;
+            padding: 50px;
+            margin-bottom: 40px;
             word-wrap: break-word;
             display: flex; /* Use flexbox to align image and text side by side */
         }
@@ -38,9 +38,6 @@
             font-size: 20px;
         }
 
-        .info-text {
-            text-align: right;
-        }
         .info-container {
             padding: 5px;
         }
@@ -51,24 +48,22 @@
         }
 
         .quantity-selector {
-            align-items: flex-start; /* Align items vertically */
-            margin-bottom: 10px; /* Add margin between the input and button */
+            align-items: flex-start;
+            margin-bottom: 10px;
         }
 
-        .quantity-input {
-            width: 35px; /* Adjust the width as needed */
+        .custom-quantity-input {
+            width: 55px;
+            text-align: center;
         }
-
 
         .offer-container {
             display: flex;
         }
 
-        .expired-message {
-            background-color: #d3d3d3; /* Use a color that represents expired or inactive */
-            color: #555; /* Text color for better readability */
-            padding: 10px;
-            border-radius: 5px;
+        .availibility{
+            width: 20px;
+            height: 20px;
         }
 
 
@@ -92,6 +87,14 @@
 
                 <!-- Display product details -->
                 <h1 th:text="${availableProduct.product.name}"></h1>
+                <div th:if="${availableProduct.amount} > 0" style="padding:10px;">
+                    <img src="https://cdn2.iconfinder.com/data/icons/greenline/512/check-512.png" class="availibility">
+                    Dostępny
+                </div>
+                <div th:unless="${availableProduct.amount} > 0" style="padding:10px;">
+                    <img src="https://img.freepik.com/premium-vector/red-cross-mark-icon-negative-choice-symbol-sign-app-button_744955-339.jpg?w=360" class="availibility">
+                    Niedostępny
+                </div>
                 <div class="description-text">
                     <p th:text="${availableProduct.description}"></p>
                 </div>
@@ -114,20 +117,32 @@
 
 
                 <div class="add-to-cart">
-                    Ilość
-                    <form th:action="@{/details/add/{productId}(productId=${availableProduct.getId()})}" method="post">
+                    <div th:if="${availableProduct.amount > 0}">
+                        Ilość
+                    </div>
+                    <form th:action="@{/details/add/{productId}(productId=${availableProduct.getId()})}" method="post" th:if="${availableProduct.amount > 0}">
                         <div class="quantity-selector">
-                            <input type="number" name="quantity" class="quantity-input" value="1" min="1" th:max="${availableProduct.amount}">
+
+                            <input type="number" name="quantity" class="custom-quantity-input" value="1" min="1" th:max="${availableProduct.amount}" th:size="1">
                             z <span th:text="${availableProduct.amount}"></span>
                         </div>
-                        <button type="submit" class="btn btn-success">Dodaj do koszyka</button>
+                        <button type="submit" class="btn btn-success btn-block">Dodaj do koszyka</button>
                     </form>
+                    <div th:unless="${availableProduct.amount > 0}">
+                        <div style="padding: 10px;"></div>
+                        <button  class="btn btn-secondary disabled btn-block">Produkt aktualnie niedostępny</button>
+                    </div>
+
                 </div>
                 <div class="info-container">
-                    <p>Informacje o produkcie:</p>
                     <hr>
-                    <p>Kategoria <span th:text="${availableProduct.product.category.name}"></span></p>
+                    <p><b>Informacje o produkcie:</b></p>
                     <hr>
+                    Kategoria <span th:text="${availableProduct.product.category.name}"  style="float: right;"></span>
+                    <hr>
+                    Waga <span th:text="${availableProduct.product.weight}"  style="float: right;"></span>
+                    <hr>
+                    Kod produktu <span th:text="${availableProduct.product.code}"  style="float: right;"></span>
                 </div>
 
                 <th:block th:if="${availableProduct.specialOffers.size() > 0}">

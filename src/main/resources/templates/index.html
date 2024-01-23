@@ -41,7 +41,7 @@
 
         .product-card {
             width: 70%;
-            margin: 2.5%;
+            margin: auto;
             border: 1px solid #ddd;
             border-radius: 5px;
             overflow: hidden;
@@ -117,7 +117,7 @@
 
             <!-- Right column for products -->
             <div class="col-md-9 product-column">
-                <div class="row products-container">
+                <div class="row products-container mx-auto">
                     <th:block th:if="${availableProducts.isEmpty()}">
                         <!-- Display a message or include a custom HTML page -->
                         <p class="empty-category">Brak dostępnych ofert produktów dla danej kategorii</p>

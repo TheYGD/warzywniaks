@@ -12,8 +12,6 @@ import pio.io.warzywniaks.service.AvailableProductService;
 import pio.io.warzywniaks.service.CartService;
 import pio.io.warzywniaks.service.SpecialOfferService;
 
-import java.util.List;
-
 @Controller
 public class AvailableProductController {
     AvailableProductService availableProductService;
@@ -38,7 +36,7 @@ public class AvailableProductController {
     public String add(@PathVariable long productId, @RequestParam int quantity) {
         AvailableProduct availableProduct = availableProductService.getProductById(productId);
         cartService.addToCart(availableProduct, quantity);
-        availableProductService.substractAmount(productId, quantity);
+        availableProductService.subtractAmount(productId, quantity);
         return "redirect:/details/" + productId;
 
 

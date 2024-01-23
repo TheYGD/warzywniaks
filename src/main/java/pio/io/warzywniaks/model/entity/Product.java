@@ -20,7 +20,8 @@ public class Product {
     private long id;
     private String imageUrl;
     private String name;
-    private String number;
+    private String code;
+    private String weight;
     private BigDecimal price;
 
     @ManyToOne

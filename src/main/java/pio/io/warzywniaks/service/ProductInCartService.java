@@ -25,8 +25,15 @@ public class ProductInCartService {
         productInCartRepository.deleteById(id);
     }
 
+    public void addProductToCart(ProductInCart productInCart){
+        productInCartRepository.save(productInCart);
+    }
+
+    public ProductInCart getProductInCart(Long productId){
+        return productInCartRepository.getById(productId);
+    }
     @Transactional
-    public void substractQuantity(Long productId) {
+    public void subtractQuantity(Long productId) {
         ProductInCart product = productInCartRepository.getById(productId);
         product.setQuantity(product.getQuantity() - 1);
         int amount = product.getAvailableProduct().getAmount();
@@ -43,7 +50,6 @@ public class ProductInCartService {
     @Transactional
     public void addQuantity(Long productId) {
         ProductInCart product = productInCartRepository.getById(productId);
-        int quantity = product.getQuantity();
         int amount = product.getAvailableProduct().getAmount();
         if (amount>0){
             product.setQuantity(product.getQuantity() + 1);

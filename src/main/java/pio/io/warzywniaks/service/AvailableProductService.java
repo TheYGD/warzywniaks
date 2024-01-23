@@ -3,7 +3,6 @@ package pio.io.warzywniaks.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pio.io.warzywniaks.model.entity.AvailableProduct;
-import pio.io.warzywniaks.model.entity.Category;
 import pio.io.warzywniaks.model.repository.AvailableProductRepository;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class AvailableProductService {
         return productsWithCategory;
     }
 
-    public void substractAmount(Long id, int n){
+    public void subtractAmount(Long id, int n){
         AvailableProduct product = availableProductRepository.getById(id);
         int amount = product.getAmount();
         if(amount - n>=0){

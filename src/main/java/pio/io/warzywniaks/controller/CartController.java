@@ -7,14 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import pio.io.warzywniaks.model.comparator.ProductInCartComparator;
-import pio.io.warzywniaks.model.entity.AvailableProduct;
 import pio.io.warzywniaks.model.entity.ProductInCart;
-import pio.io.warzywniaks.service.AvailableProductService;
 import pio.io.warzywniaks.service.CartService;
 import pio.io.warzywniaks.service.ProductInCartService;
 import pio.io.warzywniaks.service.SpecialOfferService;
 
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -44,7 +41,7 @@ public class CartController {
 
     @GetMapping("/cart/{productId}/sub")
     public  String substractQuantity(@PathVariable Long productId){
-        productInCartService.substractQuantity(productId);
+        productInCartService.subtractQuantity(productId);
         return "redirect:/cart";
 
     }
