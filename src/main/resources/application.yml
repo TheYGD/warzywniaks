@@ -1,5 +1,6 @@
 spring:
   datasource:
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:${DB_PORT:5433}/${DB_NAME:Warzywniaks}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:12345}
