@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="_shared/_layout" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <title>Katalog - Warzywniaks.pl</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+
+        body{
+            margin-bottom: 20px;
+        }
+
+        .product-column {
+            margin-left: 300px;
+        }
+
+        .product-card img {
+            flex: 1;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .card-img-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-body h5 {
+            margin-bottom: 10px;
+        }
+    </style>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background: #bcd6f3 !important;">
+        <a class="navbar-brand" href="#">Warzywniaks.pl</a>
+
+        <ul class="navbar-nav ml-3">
+            <li class="nav-item ">
+                <a class="nav-link" th:href="@{/advertisements}">Reklamy</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" th:href="@{/reports}">Raporty</a>
+            </li>
+        </ul>
+    </nav>
+    <div layout:fragment="content">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col product-column">
+                    <h2>Edytuj reklamę</h2>
+
+                    <form th:action="@{/advertisements/{id}/update(id=${advertisement.id})}" th:object="${advertisement}" method="post" enctype="multipart/form-data">
+
+                        <div class="form-group">
+                            <label for="name">Nazwa:</label>
+                            <input type="text" th:field="*{name}" class="form-control" id="name" required/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Treść:</label>
+                            <textarea th:field="*{description}" class="form-control" id="description" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <img th:src="@{'data:image/png;base64,' + ${advertisement.image}}"  id="imagePreview" src="#" style="width: 400px; height: 400px; object-fit: contain" />
+                            <br>
+                            <input type="file" th:field="*{image}" value="" class="form-control-file" id="image" accept="image/*"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="startDate">Obowiązuje od:</label>
+                            <input type="date" th:field="*{startDate}" th:value="${#dates.format(startDate, 'dd.MM.yyyy')}" class="form-control" id="startDate" required/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endDate">Obowiązuje do:</label>
+                            <input type="date" th:field="*{endDate}" th:value="${#dates.format(endDate, 'dd-MM-yyyy')}" class="form-control" id="endDate" required/>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Zapisz reklamę</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    const readURL = (input) => {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                document.getElementById('imagePreview').src = e.target.result;
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    document.getElementById('image').addEventListener('change', function () {
+        readURL(this);
+    });
+</script>
+</body>
+
+</html>

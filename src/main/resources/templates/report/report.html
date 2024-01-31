@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="_shared/_layout">
+
+<head>
+    <title>Katalog - Warzywniaks.pl</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+
+        body{
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        .container, .row {
+            width: 100%;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+        }
+
+        th {
+            text-align: center;
+        }
+
+        .report-body {
+
+            background: #f5f5f5;
+            border: 1px solid black;
+            padding: 40px 60px;
+        }
+    </style>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background: #bcd6f3 !important;">
+        <a class="navbar-brand" href="#">Warzywniaks.pl</a>
+
+        <ul class="navbar-nav ml-3">
+            <li class="nav-item ">
+                <a class="nav-link" th:href="@{/advertisements}">Reklamy</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" th:href="@{/reports}">Raporty</a>
+            </li>
+        </ul>
+    </nav>
+    <div layout:fragment="content">
+        <div class="container mt-4">
+            <div class="row">
+                <h2>Raport</h2>
+            </div>
+
+            <div class="mt-5 report-body">
+                <th:block th:utext="${payload}">
+
+                </th:block>
+            </div>
+
+            <p th:text="${'Wygenerowano: ' + #dates.createNow() }"></p>
+        </div>
+    </div>
+</body>
+</html>

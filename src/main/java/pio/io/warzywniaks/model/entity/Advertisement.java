@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -21,12 +22,8 @@ public class Advertisement {
     private Long id;
     private String name;
     private String description;
-    private String imageUrl;
-
-    @ManyToMany
-    @JoinTable(
-            name = "advertisements_products",
-            joinColumns = @JoinColumn(name = "advertisement_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    List<Product> products;
+    @Lob
+    private String image;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }
